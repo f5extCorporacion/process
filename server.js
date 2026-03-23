@@ -5,19 +5,16 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from "cookie-parser";
 import { PrismaClient } from '@prisma/client';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+
+// Importar ÚNICO archivo de rutas que contiene TODO
 import authRoutes from "./routes/auth.routes.js";
 
+// Configurar dotenv
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 4000;
-
 // Middlewares globales
 app.use(helmet());
 app.use(cors());
@@ -25,16 +22,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 // =============================================
 // ÚNICA RUTA - authRoutes lo contiene TODO
 // =============================================
-app.use("/auth", authRoutes);
-
-// Ruta documentación
-app.get("/doc", (req, res) => {
-    res.sendFile(join(__dirname, 'doc.html'));
-});
+app.use("/auth", authRoutes);  // 👈 Este archivo tiene auth E instituciones
 
 // Ruta de health check
 app.get("/health", (req, res) => {
@@ -54,8 +45,7 @@ app.get("/", (req, res) => {
         version: "1.0.0",
         endpoints: {
             auth: "/auth/* (contiene auth e instituciones)",
-            health: "/health",
-            doc: "/doc"
+            health: "/health"
         }
     });
 });
@@ -79,6 +69,7 @@ app.listen(PORT, () => {
     console.log("\n✅ Auth Service running on port 4001");
     console.log("📋 Archivo de rutas: ./routes/auth.routes.js (contiene TODO)");
     console.log("\n🔐 ENDPOINTS DISPONIBLES:");
+
     console.log("\n🚀 Servicio listo para usar en http://localhost:4001");
 });
 
@@ -98,17 +89,3 @@ process.on('SIGTERM', async () => {
     console.log("✅ Prisma desconectado");
     process.exit(0);
 });
-```
-
-Los cambios fueron:
-- Agregados `fileURLToPath`, `dirname`, `join` de Node
-- Definidos `__filename` y `__dirname` (necesarios en ESM)
-- Ruta `GET /doc` que sirve el `doc.html` desde la raíz del proyecto
-- Agregado `doc: "/doc"` en la ruta raíz
-
-El `doc.html` va directo en la raíz junto al `server.js`:
-```
-auth-service/
-├── doc.html      👈
-├── server.js
-├── package.json
