@@ -14,7 +14,13 @@ const router = express.Router();
 // ====================================
 // RUTAS DE INSTITUCIONES
 // =============================================
-
+router.get("/loginhotget", (req, res) => {
+    res.json({
+        message: "Log get",
+        version: "1.0.0",
+        
+    });
+});
 //Registro
 router.post("/instituciones/register", validateGlobal(TypeMidleware[1].nombre), registerInstitucion);  // ✅ Ahora es /instituciones/register
 router.post("/institucion/send-otp", verifyCodeCuenta)//verifica cuenta y activa
