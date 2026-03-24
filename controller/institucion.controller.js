@@ -57,7 +57,17 @@ export const registerInstitucion = async (req, res) => {
 
     } catch (error) {
         console.error(error); // 👈 para ver el error real en consola
-        res.status(500).json({ name: error.name, message: error.message });
+        if (error.code === 'P2002') {
+            return res.status(400).json({
+                ok: false,
+                message: "El email ya está registrado"
+            });
+        }
+
+        return res.status(500).json({
+            ok: false,
+            message: "Error del servidor"
+        });
     }
 };
 //Reenvio Code OK

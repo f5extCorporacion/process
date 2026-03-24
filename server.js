@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./doc/swagger.js";
 import { PrismaClient } from '@prisma/client';
 
 // Importar ÚNICO archivo de rutas que contiene TODO
@@ -26,7 +28,7 @@ app.use(cookieParser());
 // ÚNICA RUTA - authRoutes lo contiene TODO
 // =============================================
 app.use("/auth", authRoutes);  // 👈 Este archivo tiene auth E instituciones
-
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Ruta de health check
 app.get("/health", (req, res) => {
     res.json({
@@ -66,11 +68,11 @@ app.use((err, req, res, next) => {
 // INICIAR SERVIDOR
 // =============================================
 app.listen(PORT, () => {
-    console.log("\n✅ Auth Service running on port 4001");
+    console.log("\n✅ Auth Service running on port 4000");
     console.log("📋 Archivo de rutas: ./routes/auth.routes.js (contiene TODO)");
     console.log("\n🔐 ENDPOINTS DISPONIBLES:");
 
-    console.log("\n🚀 Servicio listo para usar en http://localhost:4001");
+    console.log("\n🚀 Servicio listo para usar en http://localhost:4000");
 });
 
 // =============================================

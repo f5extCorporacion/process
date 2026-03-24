@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "dev": "nodemon server.js",
+        "dev": "concurrently \"nodemon server.js\"",
         "start": "prisma generate && node server.js"
     },
     "dependencies": {
@@ -29,6 +29,8 @@
         "nodemailer": "^8.0.2",
         "prisma": "^5.22.0",
         "socket.io": "^4.8.3",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1",
         "zod": "^4.3.6"
     },
     "devDependencies": {
